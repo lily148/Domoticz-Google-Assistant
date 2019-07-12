@@ -6,7 +6,7 @@ from config import (DOMOTICZ_URL, U_NAME_DOMOTICZ, U_PASSWD_DOMOTICZ, DOMOTICZ_S
     
 from const import (groupDOMAIN, sceneDOMAIN, lightDOMAIN, switchDOMAIN, blindsDOMAIN, screenDOMAIN, pushDOMAIN,
     climateDOMAIN, tempDOMAIN, lockDOMAIN, invlockDOMAIN, colorDOMAIN, mediaDOMAIN, speakerDOMAIN, cameraDOMAIN,
-    securityDOMAIN, outletDOMAIN, ATTRS_BRIGHTNESS,ATTRS_THERMSTATSETPOINT,ATTRS_COLOR, ATTRS_COLOR_TEMP, ATTRS_PERCENTAGE,
+    securityDOMAIN, outletDOMAIN, sensorDOMAIN, ATTRS_BRIGHTNESS,ATTRS_THERMSTATSETPOINT,ATTRS_COLOR, ATTRS_COLOR_TEMP, ATTRS_PERCENTAGE,
     ERR_ALREADY_IN_STATE, ERR_WRONG_PIN, ERR_NOT_SUPPORTED)
 
 from helpers import SmartHomeError
@@ -108,6 +108,7 @@ class OnOffTrait(_Trait):
             outletDOMAIN,
             pushDOMAIN,
             speakerDOMAIN,
+            sensorDOMAIN,
         )
 
     def sync_attributes(self):
@@ -141,13 +142,14 @@ class OnOffTrait(_Trait):
             url = url + '&passcode=' + DOMOTICZ_SWITCH_PROTECTION_PASSWD
             
         # print(url)
-        r = requests.get(url, auth=(U_NAME_DOMOTICZ, U_PASSWD_DOMOTICZ))
-        if protected:
-            status = r.json()
-            err = status.get('status')
-            if err == 'ERROR':
-                raise SmartHomeError(ERR_WRONG_PIN,
-                    'Unable to execute {} for {} check your settings'.format(command, self.state.entity_id))
+        if domain != sensorDOMAIN:
+            r = requests.get(url, auth=(U_NAME_DOMOTICZ, U_PASSWD_DOMOTICZ))
+            if protected:
+               status = r.json()
+                err = status.get('status')
+                if err == 'ERROR':
+                    raise SmartHomeError(ERR_WRONG_PIN,
+                        'Unable to execute {} for {} check your settings'.format(command, self.state.entity_id))
         
 @register_trait
 class SceneTrait(_Trait):
