@@ -47,7 +47,7 @@ def AogGetDomain(device):
         elif device["Image"] in IMAGE_SPEAKER:
             return speakerDOMAIN
         elif device["Image"] in IMAGE_DOOR:
-            return lockDOMAIN
+            return doorDOMAIN
         elif device["Image"] in IMAGE_FAN:
             return switchDOMAIN
         else:
