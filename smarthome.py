@@ -9,7 +9,7 @@ import trait
 from collections.abc import Mapping
 
 from config import (U_NAME_DOMOTICZ, U_PASSWD_DOMOTICZ, DOMOTICZ_SWITCH_PROTECTION_PASSWD, SMARTHOMEPROVIDERAPIKEY, DEVICE_CONFIG, SCENE_CONFIG,
-    IMAGE_SWITCH, IMAGE_LIGHT, IMAGE_MEDIA, IMAGE_OUTLET, IMAGE_SPEAKER)
+    IMAGE_SWITCH, IMAGE_LIGHT, IMAGE_MEDIA, IMAGE_OUTLET, IMAGE_SPEAKER, IMAGE_FAN, IMAGE_DOOR)
     
 from const import (DOMOTICZ_TO_GOOGLE_TYPES, ERR_FUNCTION_NOT_SUPPORTED, ERR_PROTOCOL_ERROR, ERR_DEVICE_OFFLINE,
     ERR_UNKNOWN_ERROR, ERR_CHALLENGE_NEEDED, REQUEST_SYNC_BASE_URL, Auth,DOMOTICZ_GET_ALL_DEVICES_URL, DOMOTICZ_GET_SETTINGS_URL,
@@ -42,6 +42,10 @@ def AogGetDomain(device):
             return outletDOMAIN
         elif device["Image"] in IMAGE_SPEAKER:
             return speakerDOMAIN
+        elif device["Image"] in IMAGE_DOOR:
+            return lockDOMAIN
+        elif device["Image"] in IMAGE_FAN:
+            return switchDOMAIN
         else:
             return lightDOMAIN
     elif 'Group' == device["Type"]:
