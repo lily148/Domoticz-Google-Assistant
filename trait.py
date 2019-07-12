@@ -145,7 +145,7 @@ class OnOffTrait(_Trait):
         if domain != sensorDOMAIN:
             r = requests.get(url, auth=(U_NAME_DOMOTICZ, U_PASSWD_DOMOTICZ))
             if protected:
-               status = r.json()
+                status = r.json()
                 err = status.get('status')
                 if err == 'ERROR':
                     raise SmartHomeError(ERR_WRONG_PIN,
